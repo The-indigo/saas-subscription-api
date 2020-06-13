@@ -2,24 +2,25 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-require("dotenv").config();
 const easyxml = require('easyxml');
+require("dotenv").config();
 
-easyxml.configure({
-    singularizeChildren: true,
-    underscoreAttributes: true,
-    rootElement: 'response',
-    dateFormat: 'ISO',
-    indent: 2,
-    manifest: true
-  });
 
-//   app.use((req, res, next)=> {
-//     res.sendData = function(obj) {
-//       if (request.headers['accept'] === ('json')|| request.headers['accept'] === ('text/html')) {
+// easyxml.configure({
+//     singularizeChildren: true,
+//     underscoreAttributes: true,
+//     rootElement: 'response',
+//     dateFormat: 'ISO',
+//     indent: 2,
+//     manifest: true
+//   });
+
+//    app.use('/settings',(req, res, next)=> {
+//        res.sendData = function(obj) {
+//     if (request.headers['accept'] === 'json'|| request.headers['accept'] === 'text/html') {
 //         res.header('Content-Type', 'application/json');
 //         res.send(obj);
-//       } else if (request.headers['accept'] === ('application/xml')) {
+//       } else if (request.headers['accept'] === 'application/xml') {
 //         res.header('Content-Type', 'text/xml');
 //         var xml = easyxml.render(obj);
 //         res.send(xml);
@@ -28,7 +29,7 @@ easyxml.configure({
 //       }
 //     };
   
-//     next();
+//      next();
 //   });
 
 const userRoutes = require("./routes/user");

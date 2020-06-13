@@ -2,7 +2,7 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const config = require("../.env");
 const jwt = require("jsonwebtoken");
-const easyxml = require('easyxml');
+const easyxml = require("easyxml");
 
 exports.signUp = (req, res) => {
   const name = req.body.name;
@@ -79,55 +79,52 @@ exports.logIn = (req, res, next) => {
 };
 
 exports.changePassword = (req, res) => {
-    const email = req.body.email;
+  const email = req.body.email;
   const newPassword = req.body.newpassword;
   const id = req.params.id;
-    if (!email || !newPassword || !id) {
-      return res.status(403).send({
-        message: "Data to update can not be empty!",
+  if (!email || !newPassword || !id) {
+    return res.status(403).send({
+      message: "Data to update can not be empty!",
+    });
+  }
+
+  bcrypt
+    .hash(newPassword, 12)
+    .then((password) => {
+      User.findByIdAndUpdate(
+        id,
+        { password: password },
+        { useFindAndModify: false }
+      ).then((result) => {
+        if (!result) {
+          res.status(404).send({
+            message: err,
+          });
+        } else res.send({ message: "updated successfully." });
       });
-    }
-  
-    bcrypt.hash(newPassword, 12).then((password)=>{
-        User.findByIdAndUpdate(
-            id,
-            { password:password },
-            { useFindAndModify: false }
-          )
-            .then((result) => {
-              if (!result) {
-                res.status(404).send({
-                  message: err,
-                });
-              } else res.send({ message: "updated successfully." });
-            })
     })
 
-      .catch((err) => {
-        res.status(500).send({
-          message: err,
-        });
+    .catch((err) => {
+      res.status(500).send({
+        message: err,
       });
-  };
+    });
+};
 
-exports.settings=(req,res)=>{
-    
-        res.sendData = function(obj) {
-          if (request.headers['accept'] === ('json')|| request.headers['accept'] === ('text/html')) {
-            res.header('Content-Type', 'application/json');
-            res.send(obj);
-          } else if (request.headers['accept'] === ('application/xml')) {
-            res.header('Content-Type', 'text/xml');
-            var xml = easyxml.render(obj);
-            res.send(xml);
-          } else {
-            res.send(406);
-          }
-        };
-      
-        //next();
-   
-   
-    
-}
+// exports.settings=(req,res)=>{
+//         res.sendData = function(obj) {
+//           if (request.headers['accept'] === 'json'|| request.headers['accept'] === 'text/html') {
+//             res.header('Content-Type', 'application/json');
+//             res.send(obj);
+//           } else if (request.headers['accept'] === 'application/xml') {
+//             res.header('Content-Type', 'text/xml');
+//             var xml = easyxml.render(obj);
+//             res.send(xml);
+//           } else {
+//             res.send(406);
+//           }
+//         };
 
+//next();
+
+//}
